@@ -215,6 +215,8 @@ def formula_to_1_3_wpm(formula):
     new_f.header.append("")
 
     # **** Your code here ****
+
+
     raise NotImplementedError()
 
     return new_f

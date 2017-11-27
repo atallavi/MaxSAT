@@ -3,7 +3,6 @@
 
 import itertools  # May be useful ;)
 import sys
-
 import wcnf
 
 
@@ -50,20 +49,29 @@ class Graph(object):
         msat = wcnf.WCNFFormula()
 
         # **** Your code here ****
-        # Soft: Including a vertex in the cover has a cost of 1
+        # Soft:
         for _ in xrange(self.num_nodes):
             msat.add_clause([msat.new_var()], 1)  # clause weight = 1
 
+        # Hard:
         for i in range(self.num_nodes):
             for j in range(i+1, self.num_nodes):
                 if [i+1,j+1] not in self.edges and [j+1,i+1] not in self.edges:
-                    msat.add_clause(-(i+1),-(j+1))
+                    msat.add_clause([-(i+1), -(j+1)], 0)
 
         return msat
 
     def max_cut_to_maxsat(self):
         msat = wcnf.WCNFFormula()
+
         # **** Your code here ****
+        # Soft:
+        for _ in xrange(self.num_nodes):
+            msat.new_var()
+
+        for n1, n2 in self.edges:
+            msat.add_clause([n1, n2], 1)
+            msat.add_clause([-n1, n2], 1)
 
         return msat
 
