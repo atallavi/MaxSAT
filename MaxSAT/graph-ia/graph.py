@@ -57,7 +57,7 @@ class Graph(object):
         for i in range(self.num_nodes):
             for j in range(i+1, self.num_nodes):
                 if [i+1,j+1] not in self.edges and [j+1,i+1] not in self.edges:
-                    msat.add_clause(-(i+1),-(j+1))
+                    msat.add_clause([-(i+1),-(j+1)], 0)
 
         return msat
 
