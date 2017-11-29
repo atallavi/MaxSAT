@@ -198,6 +198,8 @@ def generate_3sat_gadget(formula, clause):
         raise ValueError("An empty clause cannot be transformed to 3SAT")
 
     # **** Your code here ****
+
+
     raise NotImplementedError()
 
     return clauses
