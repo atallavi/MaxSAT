@@ -209,14 +209,27 @@ def formula_to_1_3_wpm(formula):
     :return: A new formula whose clauses are the 1,3 WPM
              equivalent of the input formula.
     """
+    
     new_f = WCNFFormula()
     new_f.header = list(formula.header)
     new_f.header.append(" **** 1,3-WPM transformed formula ****")
     new_f.header.append("")
 
     # **** Your code here ****
+    new_f.num_vars = formula.num_vars
 
+    for tuple in formula.soft:
+        new_f._sum_soft_weights += tuple[0]
+        if len(tuple[1]) > 1:
+            new_f.add_clause([-new_f.new_var()], 1)
+            new_f.add_clause(tuple[1].append(new_f.num_vars), 0)
+        else:
+            new_f.soft.append(tuple)
 
-    raise NotImplementedError()
+    for tuple in formula.hard:
+        if len(tuple) > 3:
+            break
+        else:
+            new_f.add_clause(tuple, 0)
 
     return new_f

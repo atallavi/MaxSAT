@@ -82,13 +82,13 @@ if __name__ == '__main__':
         g.read_file(sys.argv[1])
 
         mvcovermsat = g.min_vertex_cover_to_maxsat()
-        mvcovermsat.write_dimacs_file('mvcover.wcnf')
-        # mvcovermsat.to_1_3().write_dimacs_file('mvcover_1_3.wcnf')
+        mvcovermsat.write_dimacs_file('mclique.wcnf')
+        sol = wcnf.formula_to_1_3_wpm(mvcovermsat).write_dimacs_file('mvcover_1_3.wcnf')
 
         mcliquemsat = g.max_clique_to_maxsat()
         mcliquemsat.write_dimacs_file('mclique.wcnf')
-        # mcliquemsat.to_1_3().write_dimacs_file('mclique_1_3.wcnf')
+        sol = wcnf.formula_to_1_3_wpm(mcliquemsat).write_dimacs_file('mclique_1_3.wcnf')
 
         mcutmsat = g.max_cut_to_maxsat()
         mcutmsat.write_dimacs_file('mcut.wcnf')
-        # mcutmsat.to_1_3().write_dimacs_file('mcut_1_3.wcnf')
+        sol = wcnf.formula_to_1_3_wpm(mcutmsat).write_dimacs_file('mcut_1_3.wcnf')
