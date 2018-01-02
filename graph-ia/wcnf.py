@@ -195,6 +195,7 @@ def generate_3sat_gadget(formula, clause):
     if not clause:
         raise ValueError("An empty clause cannot be transformed to 3SAT")
 
+<<<<<<< HEAD
     leng = len(clause)
     aux_var2 = 0
     lista = []
@@ -216,6 +217,12 @@ def generate_3sat_gadget(formula, clause):
                 lista.append([-aux_var2,clause[i],formula.new_var()])
                 aux_var2 = formula.num_vars
                 leng = leng - 1
+=======
+    # **** Your code here ****
+
+
+    raise NotImplementedError()
+>>>>>>> master
 
     print(lista)
     return lista
