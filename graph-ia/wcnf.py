@@ -3,12 +3,10 @@
 
 from __future__ import absolute_import, print_function, division
 
-
 import io
 import itertools
 import random
 import sys
-
 
 TOP_WEIGHT = 0
 
@@ -22,8 +20,8 @@ class WCNFFormula(object):
 
     def __init__(self):
         self.num_vars = 0
-        self.hard = []    # type: List[List[int]]
-        self.soft = []    # type: List[Tuple[weight, List[int]]]
+        self.hard = []  # type: List[List[int]]
+        self.soft = []  # type: List[Tuple[weight, List[int]]]
         self._sum_soft_weights = 0
         self.header = []  # type: List[str]
 
@@ -197,10 +195,30 @@ def generate_3sat_gadget(formula, clause):
     if not clause:
         raise ValueError("An empty clause cannot be transformed to 3SAT")
 
-    # **** Your code here ****
-    raise NotImplementedError()
+    leng = len(clause)
+    aux_var2 = 0
+    lista = []
+    while True:
+        if leng == len(clause):
+            lista.append([clause[0],clause[1],formula.new_var()])
+            aux_var2 = formula.num_vars
+            leng = leng - 2
+        if leng == 2:
+            lista.append([-aux_var2,clause[-2],clause[-1]])
+            break
 
-    return clauses
+        if leng == 1:
+            lista.append([-aux_var2,clause[-1]])
+            break
+
+        else:
+            for i in range(2, len(clause)-2):
+                lista.append([-aux_var2,clause[i],formula.new_var()])
+                aux_var2 = formula.num_vars
+                leng = leng - 1
+
+    print(lista)
+    return lista
 
 
 def formula_to_1_3_wpm(formula):
@@ -209,7 +227,7 @@ def formula_to_1_3_wpm(formula):
     :return: A new formula whose clauses are the 1,3 WPM
              equivalent of the input formula.
     """
-    
+
     new_f = WCNFFormula()
     new_f.header = list(formula.header)
     new_f.header.append(" **** 1,3-WPM transformed formula ****")
@@ -222,13 +240,18 @@ def formula_to_1_3_wpm(formula):
         new_f._sum_soft_weights += tuple[0]
         if len(tuple[1]) > 1:
             new_f.add_clause([-new_f.new_var()], 1)
-            new_f.add_clause(tuple[1].append(new_f.num_vars), 0)
+            aux_var = tuple[1]
+            aux_var.append(new_f.num_vars)
+            new_f.add_clause(aux_var, 0)
         else:
             new_f.soft.append(tuple)
 
     for tuple in formula.hard:
         if len(tuple) > 3:
-            break
+            a = generate_3sat_gadget(new_f, tuple)
+            for tuples in a:
+                new_f.add_clause(tuples, 0)
+
         else:
             new_f.add_clause(tuple, 0)
 
